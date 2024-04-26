@@ -4,16 +4,15 @@
 
 import mysql.connector
 
-hostname = "localhost"
-username = "root"
-password = "pipiriukaS56"
-database = "sakila"
-portAddress = 3317
-
-connection = None
-cursor = None
-
 def getSQLData(SQLquery):
+    hostname = "localhost"
+    username = "root"
+    password = "pipiriukaS56"
+    database = "sakila"
+    portAddress = 3317
+
+    connection = None
+    cursor = None
     try:
         connection = mysql.connector.connect(host=hostname, port=portAddress, user=username, password=password, database=database)
         #print("Connection successful!")
@@ -42,10 +41,11 @@ results = getSQLData('''
     SELECT * FROM actor 
 ''')
 
-names = []
-for row in results:
-    names.append(row[1]+' '+row[2])
-print(names)
+for i in range(len(results)):
+    if i < 5:
+        print(results[i][1:3])
+    if i == 5:
+        print('Only first 5 rows printed.')
 
 #------------------------------------------------------------------------------------------------------
 # atvaizduoti visus customerius ir stulpelį kuriame būtų atvaizduota kiek pinigų kiekvienas jų yra išleidęs nuomai, ir kiek filmų nuomavesis
@@ -69,10 +69,13 @@ results = getSQLData('''
     cust.last_name
 ''')
 
-for row in results:
-    row = list(row)
+for i in range(len(results)):
+    row = list(results[i])
     row[2] = float(row[2])
-    print(row)
+    if i < 5:
+        print(results[i])
+    if i == 5:
+        print('Only first 5 rows printed.')
 #------------------------------------------------------------------------------------------------------
 # atvaizduoti aktorius ir keliuose filmuose jie yra filmavesi
 print('---uzd3---')
@@ -94,8 +97,11 @@ results = getSQLData('''
         actor.actor_id
 ''')
 
-for row in results:
-    print(row)
+for i in range(len(results)):
+    if i < 5:
+        print(results[i])
+    if i == 5:
+        print('Only first 5 rows printed.')
 
 #------------------------------------------------------------------------------------------------------
 # atvaizduoti visus filmus ir kiek aktorių juose vaidino
@@ -115,8 +121,11 @@ SELECT
         film.film_id
         ''')
 
-for row in results:
-    print(row)
+for i in range(len(results)):
+    if i < 5:
+        print(results[i])
+    if i == 5:
+        print('Only first 5 rows printed.')
 #------------------------------------------------------------------------------------------------------
 # su pitono pagalba: nustatyti kuris nuomos punktas:
 #--turi daugiau customerių
