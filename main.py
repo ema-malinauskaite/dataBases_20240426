@@ -2,42 +2,12 @@
 # pip install mysql.connector
 # pip install mysql-connector-python[cext]
 
-import mysql.connector
-
-def getSQLData(SQLquery):
-    hostname = "localhost"
-    username = "root"
-    password = "pipiriukaS56"
-    database = "sakila"
-    portAddress = 3317
-
-    connection = None
-    cursor = None
-    try:
-        connection = mysql.connector.connect(host=hostname, port=portAddress, user=username, password=password, database=database)
-        #print("Connection successful!")
-
-        cursor = connection.cursor()
-        query = SQLquery
-        cursor.execute(query)
-        results = cursor.fetchall()
-
-    except mysql.connector.Error as err:
-        print(f"Connection error: {err}")
-
-    finally:
-        if cursor:
-            cursor.close()
-        if connection:
-            connection.close()
-    #print("Connection closed.")
-    return results
-
+import SQLCRUD as sql
 #------------------------------------------------------------------------------------------------------
 #atvaizduoti visus customerius
-print('---uzd1---')
+print('---task 1---')
 
-results = getSQLData('''
+results = sql.getSQLData('''
     SELECT * FROM actor 
 ''')
 
@@ -49,13 +19,13 @@ for i in range(len(results)):
 
 #------------------------------------------------------------------------------------------------------
 # atvaizduoti visus customerius ir stulpelį kuriame būtų atvaizduota kiek pinigų kiekvienas jų yra išleidęs nuomai, ir kiek filmų nuomavesis
-print('---uzd2---')
+print('---task 2---')
 results = getSQLData('''
     SELECT
-        cust.first_name AS 'customerFirstName',
-        cust.last_name AS 'customerLastName',
-        SUM(pay.amount) AS 'amountSpent',
-        COUNT(inv.film_id) AS 'filmCount'
+        cust.first_name,
+        cust.last_name,
+        SUM(pay.amount),
+        COUNT(inv.film_id)'
     FROM
         sakila.customer cust
             JOIN
