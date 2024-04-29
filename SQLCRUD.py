@@ -2,7 +2,7 @@ import mysql.connector
 
 hostname = "localhost"
 username = "root"
-password = "pipiriukaS56"
+password = "x"
 database = "sakila"
 portAddress = 3317
 def getSQLData(SQLquery):
