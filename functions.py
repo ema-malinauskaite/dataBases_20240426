@@ -2,7 +2,7 @@ import mysql.connector
 
 hostname = "localhost"
 username = "root"
-password = "x"
+password = "pipiriukaS56"
 database = "sakila"
 portAddress = 3317
 def getSQLData(SQLquery):
@@ -27,3 +27,15 @@ def getSQLData(SQLquery):
             connection.close()
     #print("Connection closed.")
 
+def changeToFloat(sampleData, index):
+    for i in range(len(sampleData)):
+        sampleData[i] = list(sampleData[i])
+        sampleData[i][index] = float(sampleData[i][index])
+    return sampleData
+
+def print5Rows(sampleData):
+    for i in range(len(sampleData)):
+        if i < 5:
+            print(sampleData[i])
+        if i == 5:
+            print('Only first 5 rows printed.')

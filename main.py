@@ -1,22 +1,13 @@
-import SQLCRUD as sql
+import functions
 
-#------------------------------------------------------------------------------------------------------
 print('  -- Customer names:')
-
-sakilaData = sql.getSQLData('''
-    SELECT * FROM sakila.actor 
+sakilaData = functions.getSQLData('''
+    SELECT first_name, last_name FROM sakila.actor 
 ''')
+functions.print5Rows(sakilaData)
 
-for i in range(len(sakilaData)):
-    if i < 5:
-        print(sakilaData[i][1:3])
-    if i == 5:
-        print('Only first 5 rows printed.')
-
-#------------------------------------------------------------------------------------------------------
 print('  -- Number of money spend and movies rented:')
-
-sakilaData = sql.getSQLData('''
+sakilaData = functions.getSQLData('''
     SELECT
         cust.first_name,
         cust.last_name,
@@ -36,19 +27,11 @@ sakilaData = sql.getSQLData('''
     ORDER BY
     SUM(pay.amount) DESC
 ''')
+sakilaData = functions.changeToFloat(sakilaData, 2)
+functions.print5Rows(sakilaData)
 
-for i in range(len(sakilaData)):
-    row = list(sakilaData[i])
-    row[2] = float(row[2])
-    if i < 5:
-        print(row)
-    if i == 5:
-        print('Only first 5 rows printed.')
-
-#------------------------------------------------------------------------------------------------------
 print('  -- Number of movies actors played in:')
-
-sakilaData = sql.getSQLData('''
+sakilaData = functions.getSQLData('''
     SELECT 
         actor.first_name,
         actor.last_name,
@@ -64,17 +47,10 @@ sakilaData = sql.getSQLData('''
     ORDER BY 
         films_number DESC
 ''')
+functions.print5Rows(sakilaData)
 
-for i in range(len(sakilaData)):
-    if i < 5:
-        print(sakilaData[i])
-    if i == 5:
-        print('Only first 5 rows printed.')
-
-#------------------------------------------------------------------------------------------------------
 print('  -- Number of actors that played in movies:')
-
-sakilaData = sql.getSQLData('''
+sakilaData = functions.getSQLData('''
     SELECT 
         film.title,
         COUNT(filmactor.actor_id) AS actor_number
@@ -87,17 +63,10 @@ sakilaData = sql.getSQLData('''
     ORDER BY 
         actor_number DESC
 ''')
+functions.print5Rows(sakilaData)
 
-for i in range(len(sakilaData)):
-    if i < 5:
-        print(sakilaData[i])
-    if i == 5:
-        print('Only first 5 rows printed.')
-
-#------------------------------------------------------------------------------------------------------
 print('  -- Number of customers  by store:')
-
-sakilaData = sql.getSQLData('''
+sakilaData = functions.getSQLData('''
     SELECT 
         store.store_id,
         COUNT(cust.customer_id) AS customers
@@ -110,14 +79,10 @@ sakilaData = sql.getSQLData('''
     ORDER BY 
         customers DESC
 ''')
+functions.print5Rows(sakilaData)
 
-for row in sakilaData:
-    print(row)
-
-#------------------------------------------------------------------------------------------------------
 print('   -- Number of movies rented by store:')
-
-sakilaData = sql.getSQLData('''
+sakilaData = functions.getSQLData('''
     SELECT 
         store.store_id,
         COUNT(invent.inventory_id) AS films_number
@@ -130,13 +95,10 @@ sakilaData = sql.getSQLData('''
     ORDER BY 
         films_number DESC
 ''')
-
-for row in sakilaData:
-    print(row)
-
+functions.print5Rows(sakilaData)
 
 print('  -- Profit by store:')
-sakilaData = sql.getSQLData('''
+sakilaData = functions.getSQLData('''
     SELECT 
         store.store_id,
         SUM(pay.amount) AS profit
@@ -151,8 +113,5 @@ sakilaData = sql.getSQLData('''
     ORDER BY 
         profit DESC
 ''')
-
-for row in sakilaData:
-    row = list(row)
-    row[1] = float(row[1])
-    print(row)
+sakilaData = functions.changeToFloat(sakilaData, 1)
+functions.print5Rows(sakilaData)
