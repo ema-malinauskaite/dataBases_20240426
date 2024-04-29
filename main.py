@@ -1,12 +1,13 @@
 import functions
+import yaml
 
-print('  -- Customer names:')
+print('eCustomer names:')
 sakilaData = functions.getSQLData('''
     SELECT first_name, last_name FROM sakila.actor 
 ''')
 functions.print5Rows(sakilaData)
 
-print('  -- Number of money spend and movies rented:')
+print('\nNumber of money spend and movies rented:')
 sakilaData = functions.getSQLData('''
     SELECT
         cust.first_name,
@@ -30,7 +31,7 @@ sakilaData = functions.getSQLData('''
 sakilaData = functions.changeToFloat(sakilaData, 2)
 functions.print5Rows(sakilaData)
 
-print('  -- Number of movies actors played in:')
+print('\nNumber of movies actors played in:')
 sakilaData = functions.getSQLData('''
     SELECT 
         actor.first_name,
@@ -49,7 +50,7 @@ sakilaData = functions.getSQLData('''
 ''')
 functions.print5Rows(sakilaData)
 
-print('  -- Number of actors that played in movies:')
+print('\nNumber of actors that played in movies:')
 sakilaData = functions.getSQLData('''
     SELECT 
         film.title,
@@ -65,53 +66,44 @@ sakilaData = functions.getSQLData('''
 ''')
 functions.print5Rows(sakilaData)
 
-print('  -- Number of customers  by store:')
+print('\n Information on stores:')
+print('Number of customers  by store:')
 sakilaData = functions.getSQLData('''
     SELECT 
         store.store_id,
-        COUNT(cust.customer_id) AS customers
+        customer_id AS customers
     FROM 
         sakila.store
     JOIN 
         customer cust ON store.store_id = cust.store_id
-    GROUP BY 
-        store.store_id
-    ORDER BY 
-        customers DESC
-''')
-functions.print5Rows(sakilaData)
 
-print('   -- Number of movies rented by store:')
+''')
+
+customersByStore = functions.sumBy(sakilaData, 0)
+print(yaml.dump(customersByStore, default_flow_style=False))
+
+print('Number of movies rented by store:')
 sakilaData = functions.getSQLData('''
     SELECT 
-        store.store_id,
-        COUNT(invent.inventory_id) AS films_number
+        staff_id, 
+        rental_id
     FROM 
-        sakila.store
-    JOIN 
-        inventory invent ON store.store_id = invent.store_id
-    GROUP BY 
-        store.store_id
-    ORDER BY 
-        films_number DESC
+        sakila.rental
 ''')
-functions.print5Rows(sakilaData)
 
-print('  -- Profit by store:')
+moviesByStore = functions.sumBy(sakilaData, 0)
+print(yaml.dump(moviesByStore, default_flow_style=False))
+
+print('Profit by store:')
 sakilaData = functions.getSQLData('''
     SELECT 
-        store.store_id,
-        SUM(pay.amount) AS profit
+        staff_id,
+        amount
     FROM 
-        sakila.store
-    JOIN 
-        staff staff ON store.manager_staff_id = staff.staff_id
-    JOIN 
-        payment pay ON staff.staff_id = pay.staff_id
-    GROUP BY 
-        store.store_id
-    ORDER BY 
-        profit DESC
+        sakila.payment
 ''')
 sakilaData = functions.changeToFloat(sakilaData, 1)
-functions.print5Rows(sakilaData)
+
+profitByStore = functions.sumBy(sakilaData, 0, addValueFromIndex=1, count=False)
+print(yaml.dump(profitByStore, default_flow_style=False))
+

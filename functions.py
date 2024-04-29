@@ -39,3 +39,18 @@ def print5Rows(sampleData):
             print(sampleData[i])
         if i == 5:
             print('Only first 5 rows printed.')
+
+def sumBy(sampleData, byValue, addValueFromIndex = None, count = True):
+    outputDict = {}
+    for i in sampleData:
+        if count == True:
+            if i[byValue] not in outputDict:
+                outputDict[i[byValue]] = 0
+            outputDict[i[byValue]] += 1
+        if count == False:
+            if i[byValue] not in outputDict:
+                outputDict[i[byValue]] = 0.0
+            outputDict[i[byValue]] += i[addValueFromIndex]
+    return outputDict
+
+
