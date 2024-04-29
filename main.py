@@ -67,43 +67,20 @@ sakilaData = functions.getSQLData('''
 functions.print5Rows(sakilaData)
 
 print('\n Information on stores:')
+
 print('Number of customers  by store:')
-sakilaData = functions.getSQLData('''
-    SELECT 
-        store.store_id,
-        customer_id AS customers
-    FROM 
-        sakila.store
-    JOIN 
-        customer cust ON store.store_id = cust.store_id
-
-''')
-
+sakilaData = functions.getSQLData('SELECT store_id, customer_id FROM sakila.customer')
 customersByStore = functions.sumBy(sakilaData, 0)
 print(yaml.dump(customersByStore, default_flow_style=False))
 
 print('Number of movies rented by store:')
-sakilaData = functions.getSQLData('''
-    SELECT 
-        staff_id, 
-        rental_id
-    FROM 
-        sakila.rental
-''')
-
+sakilaData = functions.getSQLData('SELECT staff_id, rental_id FROM sakila.rental')
 moviesByStore = functions.sumBy(sakilaData, 0)
 print(yaml.dump(moviesByStore, default_flow_style=False))
 
 print('Profit by store:')
-sakilaData = functions.getSQLData('''
-    SELECT 
-        staff_id,
-        amount
-    FROM 
-        sakila.payment
-''')
+sakilaData = functions.getSQLData('SELECT staff_id, amount FROM sakila.payment')
 sakilaData = functions.changeToFloat(sakilaData, 1)
-
 profitByStore = functions.sumBy(sakilaData, 0, addValueFromIndex=1, count=False)
 print(yaml.dump(profitByStore, default_flow_style=False))
 
