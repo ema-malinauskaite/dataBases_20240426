@@ -10,7 +10,6 @@ def getSQLData(SQLquery):
     cursor = None
     try:
         connection = mysql.connector.connect(host=hostname, port=portAddress, user=username, password=password, database=database)
-        #print("Connection successful!")
 
         cursor = connection.cursor()
         query = SQLquery
@@ -25,7 +24,6 @@ def getSQLData(SQLquery):
             cursor.close()
         if connection:
             connection.close()
-    #print("Connection closed.")
 
 def changeToFloat(sampleData, index):
     for i in range(len(sampleData)):
@@ -33,12 +31,15 @@ def changeToFloat(sampleData, index):
         sampleData[i][index] = float(sampleData[i][index])
     return sampleData
 
-def print5Rows(sampleData):
+def printRows(sampleData,lines = 0):
     for i in range(len(sampleData)):
-        if i < 5:
+        if lines == 0:
             print(sampleData[i])
-        if i == 5:
-            print('Only first 5 rows printed.')
+        else:
+            if i < lines:
+                print(sampleData[i])
+            if i == lines:
+                print(f'Only first {lines} rows printed.')
 
 def sumBy(sampleData, byValue, addValueFromIndex = None, count = True):
     outputDict = {}
@@ -51,6 +52,7 @@ def sumBy(sampleData, byValue, addValueFromIndex = None, count = True):
             if i[byValue] not in outputDict:
                 outputDict[i[byValue]] = 0.0
             outputDict[i[byValue]] += i[addValueFromIndex]
+            outputDict[i[byValue]] = round(outputDict[i[byValue]], 2)
     return outputDict
 
 

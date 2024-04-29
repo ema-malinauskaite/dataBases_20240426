@@ -1,11 +1,9 @@
 import functions
 import yaml
 
-print('eCustomer names:')
-sakilaData = functions.getSQLData('''
-    SELECT first_name, last_name FROM sakila.actor 
-''')
-functions.print5Rows(sakilaData)
+print('Customer names:')
+sakilaData = functions.getSQLData('SELECT first_name, last_name FROM sakila.actor')
+functions.printRows(sakilaData, 5)
 
 print('\nNumber of money spend and movies rented:')
 sakilaData = functions.getSQLData('''
@@ -29,7 +27,7 @@ sakilaData = functions.getSQLData('''
     SUM(pay.amount) DESC
 ''')
 sakilaData = functions.changeToFloat(sakilaData, 2)
-functions.print5Rows(sakilaData)
+functions.printRows(sakilaData, 5)
 
 print('\nNumber of movies actors played in:')
 sakilaData = functions.getSQLData('''
@@ -48,7 +46,7 @@ sakilaData = functions.getSQLData('''
     ORDER BY 
         films_number DESC
 ''')
-functions.print5Rows(sakilaData)
+functions.printRows(sakilaData, 5)
 
 print('\nNumber of actors that played in movies:')
 sakilaData = functions.getSQLData('''
@@ -64,7 +62,7 @@ sakilaData = functions.getSQLData('''
     ORDER BY 
         actor_number DESC
 ''')
-functions.print5Rows(sakilaData)
+functions.printRows(sakilaData, 5)
 
 print('\n Information on stores:')
 
@@ -83,4 +81,3 @@ sakilaData = functions.getSQLData('SELECT staff_id, amount FROM sakila.payment')
 sakilaData = functions.changeToFloat(sakilaData, 1)
 profitByStore = functions.sumBy(sakilaData, 0, addValueFromIndex=1, count=False)
 print(yaml.dump(profitByStore, default_flow_style=False))
-
